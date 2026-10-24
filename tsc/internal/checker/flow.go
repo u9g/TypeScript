@@ -2044,11 +2044,29 @@ func (c *Checker) getTypeOfSwitchClause(clause *ast.Node) *Type {
 	return c.neverType
 }
 
+// isPotentialAssertionCall reports whether a call expression is an expression statement or an operand
+// of a comma expression whose value is discarded.
+func isPotentialAssertionCall(node *ast.Node) bool {
+	for {
+		parent := node.Parent
+		if ast.IsExpressionStatement(parent) {
+			return true
+		}
+		if !ast.IsCommaExpression(parent) {
+			return false
+		}
+		if parent.AsBinaryExpression().Left == node {
+			return true
+		}
+		node = parent
+	}
+}
+
 func (c *Checker) getEffectsSignature(node *ast.Node) *Signature {
 	links := c.signatureLinks.Get(node)
 	signature := links.effectsSignature
 	if signature == nil {
-		// A call expression parented by an expression statement is a potential assertion. Other call
+		// A call expression whose value is discarded is a potential assertion. Other call
 		// expressions are potential type predicate function calls. In order to avoid triggering
 		// circularities in control flow analysis, we use getTypeOfDottedName when resolving the call
 		// target expression of an assertion.
@@ -2056,7 +2074,7 @@ func (c *Checker) getEffectsSignature(node *ast.Node) *Signature {
 		if ast.IsBinaryExpression(node) {
 			rightType := c.checkNonNullExpression(node.AsBinaryExpression().Right)
 			funcType = c.getSymbolHasInstanceMethodOfObjectType(rightType)
-		} else if ast.IsExpressionStatement(node.Parent) {
+		} else if isPotentialAssertionCall(node) {
 			funcType = c.getTypeOfDottedName(node.Expression(), nil /*diagnostic*/)
 		} else if node.Expression().Kind != ast.KindSuperKeyword {
 			if ast.IsOptionalChain(node) {

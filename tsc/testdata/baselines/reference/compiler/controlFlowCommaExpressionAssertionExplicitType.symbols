@@ -1,0 +1,69 @@
+//// [tests/cases/compiler/controlFlowCommaExpressionAssertionExplicitType.ts] ////
+
+=== controlFlowCommaExpressionAssertionExplicitType.ts ===
+const assertIsString = (value: unknown): asserts value is string => {};
+>assertIsString : Symbol(assertIsString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 0, 5))
+>value : Symbol(value, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 0, 24))
+>value : Symbol(value, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 0, 24))
+
+const isString = (value: unknown): value is string => typeof value === "string";
+>isString : Symbol(isString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 5))
+>value : Symbol(value, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 18))
+>value : Symbol(value, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 18))
+>value : Symbol(value, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 18))
+
+declare function log(): void;
+>log : Symbol(log, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 80))
+
+function f1(x: unknown) {
+>f1 : Symbol(f1, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 2, 29))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 4, 12))
+
+    assertIsString(x), x.length;
+>assertIsString : Symbol(assertIsString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 0, 5))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 4, 12))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 4, 12))
+}
+
+function f2(x: unknown) {
+>f2 : Symbol(f2, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 6, 1))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 8, 12))
+
+    log(), assertIsString(x);
+>log : Symbol(log, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 80))
+>assertIsString : Symbol(assertIsString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 0, 5))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 8, 12))
+
+    x;
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 8, 12))
+}
+
+function f3(x: unknown) {
+>f3 : Symbol(f3, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 11, 1))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 13, 12))
+
+    if (log(), isString(x)) {
+>log : Symbol(log, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 80))
+>isString : Symbol(isString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 5))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 13, 12))
+
+        x.length;
+>x.length : Symbol(String.length, Decl(lib.es5.d.ts, --, --))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 13, 12))
+>length : Symbol(String.length, Decl(lib.es5.d.ts, --, --))
+    }
+}
+
+function f4(x: unknown) {
+>f4 : Symbol(f4, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 17, 1))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 19, 12))
+
+    return log(), isString(x) && x.length;
+>log : Symbol(log, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 80))
+>isString : Symbol(isString, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 1, 5))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 19, 12))
+>x.length : Symbol(String.length, Decl(lib.es5.d.ts, --, --))
+>x : Symbol(x, Decl(controlFlowCommaExpressionAssertionExplicitType.ts, 19, 12))
+>length : Symbol(String.length, Decl(lib.es5.d.ts, --, --))
+}
+

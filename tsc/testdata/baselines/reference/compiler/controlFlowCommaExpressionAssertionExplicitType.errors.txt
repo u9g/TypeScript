@@ -1,0 +1,37 @@
+controlFlowCommaExpressionAssertionExplicitType.ts(6,5): error TS2775: Assertions require every name in the call target to be declared with an explicit type annotation.
+controlFlowCommaExpressionAssertionExplicitType.ts(6,24): error TS18046: 'x' is of type 'unknown'.
+controlFlowCommaExpressionAssertionExplicitType.ts(10,12): error TS2775: Assertions require every name in the call target to be declared with an explicit type annotation.
+
+
+==== controlFlowCommaExpressionAssertionExplicitType.ts (3 errors) ====
+    const assertIsString = (value: unknown): asserts value is string => {};
+    const isString = (value: unknown): value is string => typeof value === "string";
+    declare function log(): void;
+    
+    function f1(x: unknown) {
+        assertIsString(x), x.length;
+        ~~~~~~~~~~~~~~
+!!! error TS2775: Assertions require every name in the call target to be declared with an explicit type annotation.
+!!! related TS2782 controlFlowCommaExpressionAssertionExplicitType.ts:1:7: 'assertIsString' needs an explicit type annotation.
+                           ~
+!!! error TS18046: 'x' is of type 'unknown'.
+    }
+    
+    function f2(x: unknown) {
+        log(), assertIsString(x);
+               ~~~~~~~~~~~~~~
+!!! error TS2775: Assertions require every name in the call target to be declared with an explicit type annotation.
+!!! related TS2782 controlFlowCommaExpressionAssertionExplicitType.ts:1:7: 'assertIsString' needs an explicit type annotation.
+        x;
+    }
+    
+    function f3(x: unknown) {
+        if (log(), isString(x)) {
+            x.length;
+        }
+    }
+    
+    function f4(x: unknown) {
+        return log(), isString(x) && x.length;
+    }
+    

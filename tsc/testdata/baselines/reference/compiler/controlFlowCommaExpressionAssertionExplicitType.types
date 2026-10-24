@@ -1,0 +1,86 @@
+//// [tests/cases/compiler/controlFlowCommaExpressionAssertionExplicitType.ts] ////
+
+=== controlFlowCommaExpressionAssertionExplicitType.ts ===
+const assertIsString = (value: unknown): asserts value is string => {};
+>assertIsString : (value: unknown) => asserts value is string
+>(value: unknown): asserts value is string => {} : (value: unknown) => asserts value is string
+>value : unknown
+
+const isString = (value: unknown): value is string => typeof value === "string";
+>isString : (value: unknown) => value is string
+>(value: unknown): value is string => typeof value === "string" : (value: unknown) => value is string
+>value : unknown
+>typeof value === "string" : boolean
+>typeof value : "bigint" | "boolean" | "function" | "number" | "object" | "string" | "symbol" | "undefined"
+>value : unknown
+>"string" : "string"
+
+declare function log(): void;
+>log : () => void
+
+function f1(x: unknown) {
+>f1 : (x: unknown) => void
+>x : unknown
+
+    assertIsString(x), x.length;
+>assertIsString(x), x.length : any
+>assertIsString(x) : void
+>assertIsString : (value: unknown) => asserts value is string
+>x : unknown
+>x.length : any
+>x : unknown
+>length : any
+}
+
+function f2(x: unknown) {
+>f2 : (x: unknown) => void
+>x : unknown
+
+    log(), assertIsString(x);
+>log(), assertIsString(x) : void
+>log() : void
+>log : () => void
+>assertIsString(x) : void
+>assertIsString : (value: unknown) => asserts value is string
+>x : unknown
+
+    x;
+>x : unknown
+}
+
+function f3(x: unknown) {
+>f3 : (x: unknown) => void
+>x : unknown
+
+    if (log(), isString(x)) {
+>log(), isString(x) : boolean
+>log() : void
+>log : () => void
+>isString(x) : boolean
+>isString : (value: unknown) => value is string
+>x : unknown
+
+        x.length;
+>x.length : number
+>x : string
+>length : number
+    }
+}
+
+function f4(x: unknown) {
+>f4 : (x: unknown) => number | false
+>x : unknown
+
+    return log(), isString(x) && x.length;
+>log(), isString(x) && x.length : number | false
+>log() : void
+>log : () => void
+>isString(x) && x.length : number | false
+>isString(x) : boolean
+>isString : (value: unknown) => value is string
+>x : unknown
+>x.length : number
+>x : string
+>length : number
+}
+
